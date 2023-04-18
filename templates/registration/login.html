@@ -10,7 +10,7 @@
     <p>Please login</p>
   {% endif %}
 
-  <form action="{% url 'blog:login' %}" method="post">
+  <form action="{% url 'app_main:login' %}" method="post">
   {% csrf_token %}
   {{ form|crispy }}
     <input type="submit" value="Login" class="btn btn-primary">
