@@ -1,14 +1,25 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>Hello</h1>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+  <h1>
+    Newest blogs:
+    <a type="button" class="btn btn-primary btn-sm ml-3" href="{% url '' %}">+ new post</a>
+  </h1>
+  {% if post_list %}
+    <ul>
+      {% for post in post_list %}
+        <li>
+          <h3>
+            <a href="{% url ''%}">
+              {{ post.title }}
+            </a>
+          </h3>
+          <p>{{ post.created_time }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+
+{% endblock %}
+
