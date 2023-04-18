@@ -3,22 +3,22 @@
 {% block content %}
   <h1>
     Newest blogs:
-    <a type="button" class="btn btn-primary btn-sm ml-3" href="{% url '' %}">+ new post</a>
+{#    <a type="button" class="btn btn-primary btn-sm ml-3" href="{% url '' %}">+ new post</a>#}
   </h1>
-  {% if post_list %}
-    <ul>
-      {% for post in post_list %}
-        <li>
-          <h3>
-            <a href="{% url ''%}">
-              {{ post.title }}
-            </a>
-          </h3>
-          <p>{{ post.created_time }}</p>
-        </li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+{#  {% if post_list %}#}
+{#    <ul>#}
+{#      {% for post in post_list %}#}
+{#        <li>#}
+{#          <h3>#}
+{#            <a href="{% url ''%}">#}
+{#              {{ post.title }}#}
+{#            </a>#}
+{#          </h3>#}
+{#          <p>{{ post.created_time }}</p>#}
+{#        </li>#}
+{#      {% endfor %}#}
+{#    </ul>#}
+{#  {% endif %}#}
 
 
 {% endblock %}

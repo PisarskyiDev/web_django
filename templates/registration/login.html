@@ -1,19 +1,37 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
+
 {% block content %}
-    {% if form.errors %}
-      <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
-
-  <h1>Login</h1>
-  {% if next %}
-    <p>Please login</p>
-  {% endif %}
-
-  <form action="{% url 'app_main:login' %}" method="post">
-  {% csrf_token %}
-  {{ form|crispy }}
-    <input type="submit" value="Login" class="btn btn-primary">
-    <input type="hidden" name="next" value="{{ next }}">
-  </form>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-sm-12">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white">
+            <h4>Login</h4>
+          </div>
+          <div class="card-body">
+            {% if form.errors %}
+              <div class="alert alert-danger" role="alert">
+                Your username and password didn't match. Please try again.
+              </div>
+            {% endif %}
+            <form method="post" class="text-center mx-auto">
+              {% csrf_token %}
+              <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+              </div>
+              <div class="form-group">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+              </div>
+              <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Login</button>
+              </div>
+            </form>
+            <p class="text-center">Don't have an account? <a href="{% url 'app_main:signup' %}">Register here</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
