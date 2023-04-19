@@ -58,25 +58,22 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = ProfileForm
     template_name = 'profile.html'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+    def test_func(self):
+        return self.request.user.is_authenticated and self.get_object() == self.request.user
+
+    def handle_no_permission(self):
+        return redirect('app_main:home')
+
     def get_object(self, queryset=None):
         return self.request.user
 
     def get_success_url(self):
         return reverse('app_main:profile', kwargs={'pk': self.request.user.pk})
 
-# @login_required
-# def profile_view(request, pk):
-#     user = get_object_or_404(CustomUser, pk=pk)
-#     if request.method == 'POST':
-#         form = ProfileForm(request.POST, instance=request.user)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('app_main:profile', pk=pk)
-#     else:
-#         form = ProfileForm(instance=request.user)
-#     context = {
-#         'obj': user,
-#         'form': form,
-#     }
-#     return render(request, 'profile.html', context)
+
 
