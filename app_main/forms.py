@@ -24,3 +24,12 @@ class CustomAuthenticationForm(AuthenticationForm):
     class Meta:
         model = CustomUser
 
+
+class ProfileForm(forms.ModelForm):
+    birth_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'MM-DD-YYYY'}))
+
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'birth_date', 'sex', 'phone_number']
+
+

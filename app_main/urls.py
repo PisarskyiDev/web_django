@@ -21,7 +21,9 @@ from app_main.views import (
     index,
     SignUpView,
     LoginView,
-    ProfileView,
+    # ProfileView
+    # profile_view,
+    ProfileUpdateView,
 )
 
 urlpatterns = [
@@ -29,7 +31,9 @@ urlpatterns = [
     path("signup/", SignUpView.as_view(), name="signup"),
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
-    path("profile/<int:pk>/", ProfileView.as_view(), name="profile")
+    # path("profile/<int:pk>/", ProfileView.as_view(),  name="profile")
+    # path("profile/<int:pk>/", profile_view,  name="profile")
+    path("profile/<int:pk>/", ProfileUpdateView.as_view(),  name="profile")
 ]
 
 app_name = "app_main"

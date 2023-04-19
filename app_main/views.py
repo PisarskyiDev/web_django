@@ -1,10 +1,13 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
 from django.views import generic
 
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, ProfileForm
 from .models import CustomUser
 
 
@@ -38,13 +41,42 @@ class LoginView(generic.FormView):
             return self.form_invalid(form)
 
 
-class ProfileView(LoginRequiredMixin, generic.DetailView):
+# class ProfileView(LoginRequiredMixin, generic.DetailView):
+#     model = CustomUser
+#     template_name = 'profile.html'
+#     context_object_name = 'user'
+#
+#     def test_func(self):
+#         return self.request.user.is_authenticated and self.get_object() == self.request.user
+#
+#     def handle_no_permission(self):
+#         return redirect('app_main:home')
+
+# @method_decorator(login_required, name='dispatch')
+class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = CustomUser
+    form_class = ProfileForm
     template_name = 'profile.html'
-    context_object_name = 'user'
 
-    def test_func(self):
-        return self.request.user.is_authenticated and self.get_object() == self.request.user
+    def get_object(self, queryset=None):
+        return self.request.user
 
-    def handle_no_permission(self):
-        return redirect('app_main:home')
+    def get_success_url(self):
+        return reverse('app_main:profile', kwargs={'pk': self.request.user.pk})
+
+# @login_required
+# def profile_view(request, pk):
+#     user = get_object_or_404(CustomUser, pk=pk)
+#     if request.method == 'POST':
+#         form = ProfileForm(request.POST, instance=request.user)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('app_main:profile', pk=pk)
+#     else:
+#         form = ProfileForm(instance=request.user)
+#     context = {
+#         'obj': user,
+#         'form': form,
+#     }
+#     return render(request, 'profile.html', context)
+

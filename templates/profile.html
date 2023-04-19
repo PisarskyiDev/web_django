@@ -1,32 +1,71 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container-fluid mt-3">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 mt-5">
             <div class="card border-info">
                 <div class="card-header bg-info text-white">
                     <h4 class="mb-0">My profile</h4>
                 </div>
                 <div class="card-body">
-                    <p><strong>Hello, {{ user.username }}!</strong></p>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <p><strong>Username:</strong> {{ user.username }}</p>
-                            <p><strong>First name:</strong> {{ user.first_name }}</p>
-                            <p><strong>Last name:</strong> {{ user.last_name }}</p>
-                            <p><strong>Birthday:</strong> {{ user.birth_date }}</p>
+                    <form method="post" id="profile-form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-info">Save changes</button>
                         </div>
-                        <div class="col-sm-6">
-                            <p><strong>Email:</strong> {{ user.email }}</p>
-                            <p><strong>Phone:</strong> {{ user.phone_number }}</p>
-                            <p><strong>Sex:</strong> {{ user.sex }}</p>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script>
+        $(function() {
+            $('#profile-form').validate({
+                rules: {
+                    first_name: {
+                        required: true,
+                        minlength: 2
+                    },
+                    last_name: {
+                        required: true,
+                        minlength: 2
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    birthdate: {
+                        required: true,
+                        date: true
+                    }
+                },
+                messages: {
+                    first_name: {
+                        required: "Please enter your first name",
+                        minlength: "Your first name must be at least 2 characters long"
+                    },
+                    last_name: {
+                        required: "Please enter your last name",
+                        minlength: "Your last name must be at least 2 characters long"
+                    },
+                    email: {
+                        required: "Please enter your email address",
+                        email: "Please enter a valid email address"
+                    },
+                    birthdate: {
+                        required: "Please enter your birthdate",
+                        date: "Please enter a valid date in the format YYYY-MM-DD"
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
 {% endblock %}
