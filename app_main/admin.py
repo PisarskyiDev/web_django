@@ -1,11 +1,11 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.admin import UserAdmin, Group
 
 from .models import CustomUser
 
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'email', 'birth_date', 'sex', 'phone_number')
+    list_display = ('username', 'email', 'birth_date', 'sex', 'phone_number', 'key')
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'birth_date', 'sex', 'phone_number')}),

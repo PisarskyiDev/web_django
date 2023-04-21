@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow border-0">
   <a class="navbar-brand" href="{% url 'app_main:home' %}">My Website</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -7,7 +7,7 @@
     <ul class="navbar-nav ml-auto">
       {% if user.is_authenticated %}
       <li class="nav-item active">
-        <a class="nav-link" href="{{ user.get_absolute_url }}">Hello, {{ user.get_username }}!</a>
+        <a class="nav-link" href="{{ user.get_absolute_url }}">{{ user.get_username }}</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'app_main:logout' %}?next={{ request.path }}">Logout</a>

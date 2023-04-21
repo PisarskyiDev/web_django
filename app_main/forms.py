@@ -27,7 +27,6 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 
 class ProfileForm(forms.ModelForm):
-
     birth_date = forms.DateField(
         widget=forms.DateInput(
             attrs={'type': 'date', 'placeholder': 'MM-DD-YYYY'}
@@ -44,11 +43,15 @@ class ProfileForm(forms.ModelForm):
         widget=forms.PasswordInput,
         required=False,
     )
-
     old_password = forms.CharField(
         strip=False,
         widget=forms.PasswordInput,
         required=False,
+    )
+    avatar = forms.ImageField(
+        label='Profile photo',
+        required=False,
+        widget=forms.FileInput(attrs={'class': 'form-control-file'}),
     )
 
     def __init__(self, request, *args, **kwargs):
@@ -58,6 +61,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = [
+            'username',
             'first_name',
             'last_name',
             'email',
@@ -67,6 +71,7 @@ class ProfileForm(forms.ModelForm):
             'old_password',
             "password",
             "confirm_password",
+            'avatar',
         ]
 
     def clean(self):
@@ -86,12 +91,30 @@ class ProfileForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         password = self.cleaned_data["password"]
+        avatar = self.cleaned_data.get('avatar')  # Получаем загруженный файл
         if password is not None and password != '':
             user.set_password(password)
-            update_fields = ["first_name", "last_name", "email", "birth_date", "sex", "phone_number", "password"]
+            update_fields = [
+                "first_name",
+                "last_name",
+                "email",
+                "birth_date",
+                "sex",
+                "phone_number",
+                "avatar",
+                "password",
+            ]
             update_session_auth_hash(self.request, user)
         else:
-            update_fields = ["first_name", "last_name", "email", "birth_date", "sex", "phone_number"]
+            update_fields = [
+                "first_name",
+                "last_name",
+                "email",
+                "birth_date",
+                "sex",
+                "phone_number",
+                "avatar",
+            ]
         if commit:
             user.save(update_fields=update_fields)
         return user

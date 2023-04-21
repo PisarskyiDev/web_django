@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.utils.decorators import method_decorator
 from django.views import generic
+from PIL import Image
+from io import BytesIO
 
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, ProfileForm
 from .models import CustomUser
@@ -75,5 +75,31 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
     def get_success_url(self):
         return reverse('app_main:profile', kwargs={'pk': self.request.user.pk})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+    #
+    # def get(self, request, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     form = self.get_form()
+    #     context = self.get_context_data(form=form, object=self.object)
+    #     user = context['user']
+    #     avatar = user.avatar  # Получаем объект Avatar для пользователя
+    #     context['avatar'] = avatar  # Добавляем объект Avatar в контекст шаблона
+    #     return self.render_to_response(context)
+    #
 
-
+    # def post_avatar(self, request, *args, **kwargs):
+    #     form = self.get_form()
+    #     if form.is_valid():
+    #         user = self.get_object()
+    #         avatar = form.cleaned_data.get('avatar')  # Получаем загруженный файл
+    #         if avatar:
+    #             user.avatar.delete()  # Удаляем старый файл аватара пользователя
+    #             user.avatar = avatar  # Сохраняем новый файл аватара пользователя
+    #         user.avatar.save()
+    #         # messages.success(request, 'Your profile has been updated successfully.')
+    #         return redirect('app_main:profile', pk=user.pk)
+    #     else:
+    #         return self.form_invalid(form)
